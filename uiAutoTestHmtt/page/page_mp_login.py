@@ -1,36 +1,54 @@
-from uiAutoTestHmtt.base.base import Base
+from time import sleep
+
+from uiAutoTestHmtt import page
+from uiAutoTestHmtt.base.base import Base, log
+
+# class PageMpLogin(Base):
+from uiAutoTestHmtt.base.web_base import WebBase
 
 
-class PageMpLogin(Base):
-    # ÊäÈëÓÃ»§Ãû
-    def page_input_username(self):
-        pass
+class PageMpLogin(WebBase):
+    # è¾“å…¥ç”¨æˆ·å
+    def page_input_username(self, username):
+        self.base_input(page.mp_username, username)
 
-    # ÊäÈëÑéÖ¤Âë
-    def page_input_code(self):
-        pass
+    # è¾“å…¥éªŒè¯ç 
+    def page_input_code(self, code):
+        self.base_input(page.mp_code, code)
 
-    # µã»÷µÇÂ¼°´Å¥
+    # ç‚¹å‡»ç™»å½•æŒ‰é’®
     def page_click_login_btn(self):
-        pass
+        sleep(1)
+        self.base_click(page.mp_login_btn)
 
-    # »ñÈ¡êÇ³Æ·â×°
+    # è·å–æ˜µç§°å°è£…  ---> æµ‹è¯•è„šæœ¬å±‚æ–­è¨€ä½¿ç”¨
     def page_get_nickname(self):
-        pass
+        return self.base_get_text(page.mp_nickname)
 
-    # ×éºÏÒµÎñ·½·¨£¨×÷ÓÃ£º°ÑÇ°ÃæµÄ²½Öè×éºÏÔÚÒ»Æğ£¬ºóÃæµ÷ÓÃµÄÊ±¼ä¾ÍÖ»ÓÃµ÷ÓÃÕâÒ»¸ö·½·¨£©
-    def page_mp_login(self):
-        pass
+    # ç»„åˆä¸šåŠ¡æ–¹æ³•ï¼ˆä½œç”¨ï¼šæŠŠå‰é¢çš„æ­¥éª¤ç»„åˆåœ¨ä¸€èµ·ï¼Œåé¢è°ƒç”¨çš„æ—¶é—´å°±åªç”¨è°ƒç”¨è¿™ä¸€ä¸ªæ–¹æ³•ï¼‰
+    # ---->æµ‹è¯•è„šæœ¬å±‚è°ƒç”¨
+    def page_mp_login(self, username, code):
+        self.page_input_username(username)
+        self.page_input_code(code)
+        self.page_click_login_btn()
+        # self.page_get_nickname()
+
+    # ç»„åˆä¸šåŠ¡æ–¹æ³• -ã€‹å‘å¸ƒæ–‡ç« ä¾èµ–ä½¿ç”¨
+    def page_mp_login_success(self, username="13812345678", code="246810"):
+        log.info("æ­£åœ¨è°ƒç”¨è‡ªåª’ä½“ç™»å½•ä¸šåŠ¡æ–¹æ³•=====")
+        self.page_input_username(username)
+        self.page_input_code(code)
+        self.page_click_login_btn()
 
 
 """
-pageÄ£¿éÆğÃû¸¨Öú£º
-    Ä£¿éÃû±àĞ´£º
-        page+ÏÂ»®Ïß+Ä£¿éÃû.py(Èç£ºpage_login.py)
-    
-    ÀàÃû±àĞ´£º
-        ´óÍÕ·å·½Ê½½«Ä£¿éÃû³­½øÀ´£¬ÓĞÏÂ»®ÏßÈ¥µôÏÂ»®Ïß
-    
-    º¯ÊıÃû±àĞ´£ºpage+ÏÂ»®Ïß+¶¯´Ê+ÏÂ»®Ïß+Ãû´Ê £¨page_input_username)
+pageæ¨¡å—èµ·åè¾…åŠ©ï¼š
+    æ¨¡å—åç¼–å†™ï¼š
+        page+ä¸‹åˆ’çº¿+æ¨¡å—å.py(å¦‚ï¼špage_login.py)
+
+    ç±»åç¼–å†™ï¼š
+        å¤§é©¼å³°æ–¹å¼å°†æ¨¡å—åæŠ„è¿›æ¥ï¼Œæœ‰ä¸‹åˆ’çº¿å»æ‰ä¸‹åˆ’çº¿
+
+    å‡½æ•°åç¼–å†™ï¼špage+ä¸‹åˆ’çº¿+åŠ¨è¯+ä¸‹åˆ’çº¿+åè¯ ï¼ˆpage_input_username)
 
 """

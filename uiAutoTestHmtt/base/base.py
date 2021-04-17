@@ -1,72 +1,96 @@
+import allure
 from selenium import webdriver
 from selenium.webdriver.support.wait import WebDriverWait
 
+from uiAutoTestHmtt.tools.get_log import GetLog
+
+log = GetLog.get_logger()
 
 class Base:
 
-    # ³õÊ¼»¯
+    # åˆå§‹åŒ–
     def __init__(self, driver):
-        """½â¾ödriver"""
+        log.info('æ­£åœ¨åˆå§‹åŒ–driverï¼š{}'.format(driver))
+        """è§£å†³driver"""
         self.driver = driver
 
-    # ²éÕÒ ·½·¨·â×° locÒ»¶¨ÊÇ¸öÁĞ±í»òÕßÔª×é
+    # æŸ¥æ‰¾ æ–¹æ³•å°è£… locä¸€å®šæ˜¯ä¸ªåˆ—è¡¨æˆ–è€…å…ƒç»„
     def base_find(self, loc, timeout=30, poll=0.5):
         """
 
-        :param loc: ¸ñÊ½ÎªÁĞ±í»òÔª×é£¬ÄÚÈİ£ºÔªËØ¶¨Î»ĞÅÏ¢Ê¹ÓÃByÀà
-        :param timeout: ²éÕÒÔªËØ³¬Ê±Ê±¼ä£¬Ä¬ÈÏ30Ãë
-        :param poll: ²éÕÒÔªËØµÄÆµÂÊ Ä¬ÈÏÎª0.5Ãë
-        :return: ÔªËØ
+        :param loc: æ ¼å¼ä¸ºåˆ—è¡¨æˆ–å…ƒç»„ï¼Œå†…å®¹ï¼šå…ƒç´ å®šä½ä¿¡æ¯ä½¿ç”¨Byç±»
+        :param timeout: æŸ¥æ‰¾å…ƒç´ è¶…æ—¶æ—¶é—´ï¼Œé»˜è®¤30ç§’
+        :param poll: æŸ¥æ‰¾å…ƒç´ çš„é¢‘ç‡ é»˜è®¤ä¸º0.5ç§’
+        :return: å…ƒç´ 
         """
         return (WebDriverWait(self.driver,
                               timeout=timeout,
-                              poll_frequency=poll).until(lambda x: x.find_element(*loc)))  # ÄäÃûº¯Êı
+                              poll_frequency=poll).until(lambda x: x.find_element(*loc)))  # åŒ¿åå‡½æ•°
         """
-        ²ÎÊı½âÊÍ£º
-            loc £ºÎªÔª×é»òÁĞ±í£¨*locÎª½â°ü==loc[0],loc[1]£© 
-            lambda x: x.find_element(*loc)  £º ÄäÃûº¯Êı£¬xÎªdriver
-        
+        å‚æ•°è§£é‡Šï¼š
+            loc ï¼šä¸ºå…ƒç»„æˆ–åˆ—è¡¨ï¼ˆ*locä¸ºè§£åŒ…==loc[0],loc[1]ï¼‰ 
+            lambda x: x.find_element(*loc)  ï¼š åŒ¿åå‡½æ•°ï¼Œxä¸ºdriver
+
         """
 
-    # ÊäÈë ·½·¨·â×°
+    # è¾“å…¥ æ–¹æ³•å°è£…
     def base_input(self, loc, value):
         """
 
-        :param loc: ÔªËØµÄ¶¨Î»ĞÅÏ¢
-        :param value: ÒªÊäÈëµÄÖµ
+        :param loc: å…ƒç´ çš„å®šä½ä¿¡æ¯
+        :param value: è¦è¾“å…¥çš„å€¼
         """
-        # 1¡£»ñÈ¡ÔªËØ
+        # 1ã€‚è·å–å…ƒç´ 
         el = self.base_find(loc)
 
-        # 2¡£Çå¿Õ²Ù×÷
+        # 2ã€‚æ¸…ç©ºæ“ä½œ
         el.clear()
 
-        # 3¡£ÊäÈë²Ù×÷
+        # 3ã€‚è¾“å…¥æ“ä½œ
         el.send_keys(value)
 
-    # µã»÷ ·½·¨·â×°
+    # ç‚¹å‡» æ–¹æ³•å°è£…
     def base_click(self, loc):
         """
 
-        :param loc: ÔªËØ¶¨Î»ĞÅÏ¢
+        :param loc: å…ƒç´ å®šä½ä¿¡æ¯
         """
-        # 1¡£»ñÈ¡ÔªËØ
+        # 1ã€‚è·å–å…ƒç´ 
         self.base_find(loc).click()
-        # 2¡£µã»÷°´Å¥
+        # 2ã€‚ç‚¹å‡»æŒ‰é’®
 
-    # »ñÈ¡ ÔªËØÎÄ±¾
+    # è·å– å…ƒç´ æ–‡æœ¬
     def base_get_text(self, loc):
         """
 
-        :param loc: ÔªËØ¶¨Î»ĞÅÏ¢
-        :return: ·µ»ØÔªËØµÄÎÄ±¾Öµ
+        :param loc: å…ƒç´ å®šä½ä¿¡æ¯
+        :return: è¿”å›å…ƒç´ çš„æ–‡æœ¬å€¼
         """
         return self.base_find(loc).text
 
+    # æˆªå›¾
+    def base_get_img(self):
+        log.error("æ­£åœ¨è¿›è¡Œæˆªå›¾æ“ä½œï¼")
+        # 1. è°ƒç”¨æˆªå›¾æ–¹æ³•
+        self.driver.get_screenshot_as_file('./image/err.png')
+        # 2. è°ƒç”¨å›¾ç‰‡å†™å…¥æŠ¥å‘Šæ–¹æ³•
+        self.__base_write_img()
+
+    # å°†å›¾ç‰‡å†™å…¥æŠ¥å‘Šæ–¹æ³•ï¼ˆç§æœ‰ï¼‰
+    def __base_write_img(self):
+        # 1ã€‚è·å–å›¾ç‰‡æ–‡ä»¶æµ
+        with open('./image/err.png', 'rb') as f:
+
+            #2ã€‚è°ƒç”¨allure.attaché™„åŠ æ–¹æ³•
+            allure.attach('é”™è¯¯åŸå› ï¼š', f.read(), allure.attach.PNG)
+
 
 """
-baseÄ£¿éÆğÃû¸¨Öú£º
-    Ä£¿éÃû±àĞ´£ºbase.py
-    ÀàÃû±àĞ´£º´óÍÕ·å·½Ê½½«Ä£¿éÃû³­½øÀ´£¬ÓĞÏÂ»®ÏßÈ¥µôÏÂ»®Ïß
-    º¯ÊıÃû±àĞ´£ºbase+ÏÂ»®Ïß+¶¯´Ê+[Ãû´Ê] £¨Èçbase_input£©
+baseæ¨¡å—èµ·åè¾…åŠ©ï¼š
+    æ¨¡å—åç¼–å†™ï¼šbase.py
+    ç±»åç¼–å†™ï¼šå¤§é©¼å³°æ–¹å¼å°†æ¨¡å—åæŠ„è¿›æ¥ï¼Œæœ‰ä¸‹åˆ’çº¿å»æ‰ä¸‹åˆ’çº¿
+    å‡½æ•°åç¼–å†™ï¼šbase+ä¸‹åˆ’çº¿+åŠ¨è¯+[åè¯] ï¼ˆå¦‚base_inputï¼‰
 """
+
+
+
